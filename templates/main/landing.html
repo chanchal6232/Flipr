@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chanchal Agency</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .project-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .client-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Chanchal Agency</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+                <a class="nav-link" href="{% url 'projects' %}">Projects</a>
+                <a class="nav-link" href="{% url 'clients' %}">Clients</a>
+                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Hero Section -->
+        <div class="text-center py-5 bg-light rounded">
+            <h1 class="display-4">Welcome to Chanchal Agency</h1>
+            <p class="lead">Professional solutions for your business needs</p>
+        </div>
+
+        <!-- Projects Section -->
+        <section class="py-5">
+            <h2 class="text-center mb-4">Our Projects</h2>
+            
+            {% if projects %}
+            <div class="row">
+                {% for project in projects %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ project.category }}</h6>
+                            <p class="card-text">{{ project.description }}</p>
+                            <p class="text-muted"><small>📍 {{ project.location }}</small></p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <p>No projects available. Add projects from the admin panel.</p>
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Go to Admin</a>
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'projects' %}" class="btn btn-outline-primary">View All Projects</a>
+            </div>
+        </section>
+
+        <!-- Clients Section -->
+        <section class="py-5 bg-light">
+            <h2 class="text-center mb-4">Happy Clients</h2>
+            
+            {% if clients %}
+            <div class="row">
+                {% for client in clients %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ client.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ client.designation }}</h6>
+                            {% if client.company %}
+                            <p class="text-muted"><small>{{ client.company }}</small></p>
+                            {% endif %}
+                            <p class="card-text">{{ client.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <p>No client testimonials yet. Add clients from the admin panel.</p>
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'clients' %}" class="btn btn-outline-primary">View All Clients</a>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="py-5">
+            <h2 class="text-center mb-4">Get a Free Consultation</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="contactForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" name="full_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mobile Number *</label>
+                            <input type="tel" class="form-control" name="mobile_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">City *</label>
+                            <input type="text" class="form-control" name="city" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Get Quick Quote</button>
+                        </div>
+                        <div id="formMessage" class="mt-3"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h4>Subscribe to Newsletter</h4>
+                        <p>Get updates on new projects and services.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <form id="newsletterForm">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="Enter your email" id="newsletterEmail" required>
+                                <button class="btn btn-primary" type="submit">Subscribe</button>
+                            </div>
+                            <div id="newsletterMessage" class="mt-2 text-white"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <p>&copy; 2025 Chanchal Agency. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/api/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                const messageDiv = document.getElementById('formMessage');
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="alert alert-success">' + result.message + '</div>';
+                    this.reset();
+                } else {
+                    messageDiv.innerHTML = '<div class="alert alert-danger">Error: ' + JSON.stringify(result) + '</div>';
+                }
+            } catch (error) {
+                document.getElementById('formMessage').innerHTML = 
+                    '<div class="alert alert-danger">Network error. Please try again.</div>';
+            }
+        });
+
+        // Newsletter Subscription
+        document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            
+            try {
+                const response = await fetch('/api/subscribe/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({email: email})
+                });
+                
+                const result = await response.json();
+                const messageDiv = document.getElementById('newsletterMessage');
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="alert alert-success">' + result.message + '</div>';
+                    document.getElementById('newsletterEmail').value = '';
+                } else {
+                    messageDiv.innerHTML = '<div class="alert alert-danger">' + JSON.stringify(result) + '</div>';
+                }
+            } catch (error) {
+                document.getElementById('newsletterMessage').innerHTML = 
+                    '<div class="alert alert-danger">Network error. Please try again.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

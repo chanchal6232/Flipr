@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Happy Clients - Chanchal Agency{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Happy Clients</h1>
+    
+    {% if clients %}
+    <div class="row">
+        {% for client in clients %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 80px; height: 80px; margin: 0 auto; font-size: 2rem;">
+                                {{ client.name|slice:":1"|upper }}
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h5 class="card-title">{{ client.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ client.designation }}</h6>
+                            {% if client.company %}
+                            <p class="text-muted"><small>{{ client.company }}</small></p>
+                            {% endif %}
+                            <p class="card-text">{{ client.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="alert alert-info">
+            <h4>No Client Testimonials</h4>
+            <p>There are no client testimonials in the database yet.</p>
+            <a href="/admin/main/client/add/" class="btn btn-primary">Add Clients in Admin Panel</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
