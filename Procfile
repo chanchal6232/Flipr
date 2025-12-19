@@ -1,1 +1,2 @@
-web: gunicorn main.wsgi
+web: gunicorn flipr_project.wsgi --bind 0.0.0.0:$PORT
+
